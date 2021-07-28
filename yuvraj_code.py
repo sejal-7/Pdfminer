@@ -49,6 +49,7 @@ class Ui_MainWindow(object):
         self.pushButton.setDefault(True)
         self.pushButton.setFlat(False)
         self.pushButton.setObjectName("pushButton")
+        # self.first_time_csv_write = True
         self.pushButton.clicked.connect(self.open)
         #self.pushButton.show()
         self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
@@ -89,27 +90,30 @@ class Ui_MainWindow(object):
         return data
 
 
-    def writeToCSV (self, data):
-        data_file = open('output.csv', 'w+', newline='')
+    def writeToCSV (self, data ):
+        data_file = open('output.csv', 'a+', newline='')
         csv_writer = csv.writer(data_file)
 
         # Writing data into csv file
         header = data.keys()
-        csv_writer.writerow(header)
+        if(self.first_time_csv_write):
+            csv_writer.writerow(header)
+            self.first_time_csv_write = False
         csv_writer.writerow(data.values())   # Sejal Resume      <-- data
         print("Data inserted successfully...!  :)")
         print(data)
         data_file.close()
 
     def open(self):
-        print("Hello")
-        #path = QFileDialog.getOpenFileName(self, 'Open a file', '',
-                                       # 'All Files (.)')
-        print("Hello2")
+        #print("Hello")
+        path = QFileDialog.getOpenFileName(None, 'Open a file', '', 'All Files (*.*)')
+        #print("Hello2")
         #if path != ('', ''):
+        #print(path[0])
         print("Hello3")
-        extracted_Data = self.extractResume("C:/Users/G.Sudarshan/Downloads/Sejal resume.pdf") # Write extracted data to CSV file
+        extracted_Data = self.extractResume(path[0]) # Write extracted data to CSV file
         print("Processing....")
+         
         self.writeToCSV(extracted_Data)
         print("File written successfully")
 
@@ -119,6 +123,7 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
+    ui.first_time_csv_write = True
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

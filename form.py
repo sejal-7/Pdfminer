@@ -19,22 +19,23 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from aboutusnew import Ui_MainWindow
+from extract import Extract_Ui_MainWindow
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtGui import QPixmap
 
-
-
-
+import os
 
 import PyPDF2
 
 import spacy
 
-# import spacy
+import spacy
 import re
 from spacy import displacy
 from spacy.matcher import Matcher
 import csv
 
-# nlp = spacy.load("en")
+#nlp = spacy.load("en")
 
 
 
@@ -46,6 +47,18 @@ class Ui_main(object):
         self.ui.setupUi(self.window)
         main.hide();
         self.window.show()
+
+
+
+
+    def openExtracteDataWindow(self):
+        #print("Hello")
+        self.window = QtWidgets.QMainWindow()
+        self.ui = Extract_Ui_MainWindow()
+        self.ui.setupUi(self.window)
+        #main.hide();
+        self.window.show()
+
         
     def setupUi(self, main):
         main.setObjectName("main")
@@ -67,7 +80,7 @@ class Ui_main(object):
         self.line.setFrameShape(QtWidgets.QFrame.HLine)
         self.line.setObjectName("line")
         self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
-        # self.pushButton_2.setGeometry(QtCore.QRect(210, 380, 311, 111))
+        self.pushButton_2.setGeometry(QtCore.QRect(380, 240, 281, 111))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(16)
@@ -86,30 +99,10 @@ class Ui_main(object):
         self.pushButton_2.setIcon(icon)
         self.pushButton_2.setIconSize(QtCore.QSize(100, 100))
         self.pushButton_2.setObjectName("pushButton_2")
-        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        # self.pushButton.setGeometry(QtCore.QRect(60, 240, 281, 111))
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(16)
-        font.setBold(False)
-        font.setItalic(False) 
-        font.setWeight(50)
-        self.pushButton.setFont(font)
-        self.pushButton.setAutoFillBackground(False)
-        self.pushButton.setStyleSheet("background-color: rgb(255, 0, 0);\n"
-"color: rgb(255, 255, 255);\n"
-"font: 16pt \"Times New Roman\";\n"
-"border-color: rgb(255, 255, 255);\n"
-"border-radius:20px")
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("Images/documents.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton.setIcon(icon1)
-        self.pushButton.setIconSize(QtCore.QSize(100, 100))
-        self.pushButton.setDefault(True)
-        self.pushButton.setFlat(False)
-        self.pushButton.setObjectName("pushButton")
+        self.pushButton_2.clicked.connect(self.openExtracteDataWindow)
+
         self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_3.setGeometry(QtCore.QRect(380, 240, 281, 111))
+        self.pushButton_3.setGeometry(QtCore.QRect(60, 240, 281, 111))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(16)
@@ -139,7 +132,7 @@ class Ui_main(object):
         self.pushButton_4.setFlat(True)
         self.pushButton_4.setObjectName("pushButton_4")
         self.pushButton_4.clicked.connect(self.openWindow) 
-        
+
         main.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(main)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 742, 30))
@@ -157,8 +150,10 @@ class Ui_main(object):
         main.setWindowTitle(_translate("main", "main"))
         self.label.setText(_translate("main", "Joining Letter Parser"))
         self.pushButton_2.setText(_translate("main", "Extracted Data"))
-        self.pushButton.setText(_translate("main", "Select Files"))
+        #self.pushButton.setText(_translate("main", "Select Files"))
         self.pushButton_3.setText(_translate("main", "Select Folders"))
+
+
 
 ########################## ML Code ########################################################
     def extractResume (self, filepath):
@@ -167,14 +162,14 @@ class Ui_main(object):
 
 
     def writeToCSV (self, data ):
-        data_file = open('output.csv', 'a+', newline='')
+        data_file = open('../output/output.csv', 'a+', newline='')
         csv_writer = csv.writer(data_file)
 
         # Writing data into csv file
-        header = data.keys()
-        if(self.first_time_csv_write):
-            csv_writer.writerow(header)
-            self.first_time_csv_write = False
+        # header = data.keys()
+        # if(self.first_time_csv_write):
+        #     csv_writer.writerow(header)
+        #     self.first_time_csv_write = False
         csv_writer.writerow(data.values())   # Sejal Resume      <-- data
         print("Data inserted successfully...!  :)")
         print(data)
@@ -313,19 +308,7 @@ class Ui_main(object):
 
         return data
 
-    def writeToCSV (self, data ):
-        data_file = open('output.csv', 'a+', newline='')
-        csv_writer = csv.writer(data_file)
 
-        # Writing data into csv file
-        header = data.keys()
-        if(self.first_time_csv_write):
-            csv_writer.writerow(header)
-            self.first_time_csv_write = False
-        csv_writer.writerow(data.values())   # Sejal Resume      <-- data
-        print("Data inserted successfully...!  :)")
-        print(data)
-        data_file.close()
 
 
 #########################################################################################		
@@ -340,22 +323,41 @@ class Ui_main(object):
 ############################################################################################
     def openFolder(self):
                 #print("Hello")
-        path = QtWidgets.QFileDialog.getOpenFileName(None, 'Open a file', '', 'All Files (*.*)')
-        #folderpath = QtWidgets.QFileDialog.getExistingDirectory(main, 'Select Folder')
+        # path = QtWidgets.QFileDialog.getOpenFileName(None, 'Open a file', '', 'All Files (*.*)')
+        folderpath = QtWidgets.QFileDialog.getExistingDirectory(main, 'Select Folder')
                 #print("Hello2")
                 #if path != ('', ''):
                 #print(path[0])
         # Extract data from resume
-        extracted_text = self.extractPDF(path[0])
 
-        extracted_Data = self.extractInformation(extracted_text)
-        # Write extracted data to CSV file
-        self.writeToCSV(extracted_Data)
+        os.chdir(folderpath)
+    
+            # iterate through all file
+        for file in os.listdir():
+                # Check whether file is in text format or not
+           # if file.endswith(".pdf"):
+                print("File selected for reading")    
+                file_path = f"{folderpath}\{file}"
+                extracted_text = self.extractPDF(file_path)
+                extracted_Data = self.extractInformation(extracted_text)
+                # Write extracted data to CSV file
+                self.writeToCSV(extracted_Data)
+        showMessage()           
         print("done")
 
+    
+def showMessage():
+    msg= QMessageBox()
+    msg.setWindowTitle("");
+    msg.setText("Data Inserted Successfully!!")
+    msg.setIconPixmap(QPixmap("Images/check.png"))
+    msg.setStyleSheet("background-color: rgb(255,248,220);")
+    x=msg.exec_()
+
+            
 ######################### ML code END ###################################################
 
-        
+       
 
 if __name__ == "__main__":
     import sys

@@ -12,7 +12,17 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import webbrowser
 
 
+
 class Ui_MainWindow(object):
+
+    def openNewWindow(self):
+        from form import Ui_main
+        self.window = QtWidgets.QMainWindow()
+        self.ui = Ui_main()
+        self.ui.setupUi(self.window)
+        #MainWindow.hide();
+        self.window.show()
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(812, 660)
@@ -263,6 +273,14 @@ class Ui_MainWindow(object):
         self.pushButton_12.setFlat(True)
         self.pushButton_12.setObjectName("pushButton_12")
         self.pushButton_12.clicked.connect(lambda: webbrowser.open('https://github.com/sejal-7'))
+
+        self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_4.setGeometry(QtCore.QRect(30, 20, 65, 65))
+        self.pushButton_4.setStyleSheet("background-image: url(Images/left.png)")
+        self.pushButton_4.setText("")
+        self.pushButton_4.setFlat(True)
+        self.pushButton_4.setObjectName("pushButton_4")
+        self.pushButton_4.clicked.connect(self.openNewWindow) 
 
         
         MainWindow.setCentralWidget(self.centralwidget)

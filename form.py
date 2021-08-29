@@ -99,7 +99,7 @@ class Ui_main(object):
         self.pushButton_2.setIcon(icon)
         self.pushButton_2.setIconSize(QtCore.QSize(100, 100))
         self.pushButton_2.setObjectName("pushButton_2")
-        self.pushButton_2.clicked.connect(self.openExtracteDataWindow)
+        self.pushButton_2.clicked.connect(self.openExcel)
 
         self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_3.setGeometry(QtCore.QRect(60, 240, 281, 111))
@@ -345,6 +345,10 @@ class Ui_main(object):
         showMessage()           
         print("done")
 
+
+    def openExcel(self):
+        os.system("start EXCEL.EXE ./output/output.csv")
+
     
 def showMessage():
     msg= QMessageBox()
@@ -353,6 +357,9 @@ def showMessage():
     msg.setIconPixmap(QPixmap("Images/check.png"))
     msg.setStyleSheet("background-color: rgb(255,248,220);")
     x=msg.exec_()
+
+
+
 
             
 ######################### ML code END ###################################################

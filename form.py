@@ -347,7 +347,7 @@ class Ui_main(object):
 
 
     def openExcel(self):
-        os.system("start EXCEL.EXE ./output/output.csv")
+        os.system("start EXCEL.EXE output/output.csv")
 
     
 def showMessage():

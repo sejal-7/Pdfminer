@@ -166,9 +166,9 @@ class Ui_main(object):
         csv_writer = csv.writer(data_file)
 
         # Writing data into csv file
-        # header = data.keys()
+        #header = data.keys()
         # if(self.first_time_csv_write):
-        #     csv_writer.writerow(header)
+        #csv_writer.writerow(header)
         #     self.first_time_csv_write = False
         csv_writer.writerow(data.values())   # Sejal Resume      <-- data
         print("Data inserted successfully...!  :)")
@@ -347,7 +347,7 @@ class Ui_main(object):
 
 
     def openExcel(self):
-        os.system("start EXCEL.EXE output/output.csv")
+        os.system("start EXCEL.EXE output\output.csv")
 
     
 def showMessage():
